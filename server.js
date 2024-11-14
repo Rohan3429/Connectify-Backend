@@ -16,30 +16,30 @@ dotenv.config();
 const app = express();
 const server = http.createServer(app);
 
-Configure CORS for both Express and Socket.IO
+// Configure CORS for both Express and Socket.IO
 const corsOptions = {
   origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
   methods: ['GET', 'POST'],
   credentials: true
 };
 
-// app.use(cors(corsOptions));
+app.use(cors(corsOptions));
 
-// const io = socketIO(server, {
-//   cors: corsOptions,
-//   pingTimeout: 60000,
-//   connectTimeout: 60000
-// });
-const corsOptions = {
-  origin: [
-    'http://localhost:5173',
-    'http://127.0.0.1:5173',
-    'https://connectify-frontend-gray.vercel.app' // Add your Vercel frontend URL here
-  ],
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
-};
+const io = socketIO(server, {
+  cors: corsOptions,
+  pingTimeout: 60000,
+  connectTimeout: 60000
+});
+// const corsOptions = {
+//   origin: [
+//     'http://localhost:5173',
+//     'http://127.0.0.1:5173',
+//     'https://connectify-frontend-gray.vercel.app' // Add your Vercel frontend URL here
+//   ],
+//   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+//   allowedHeaders: ['Content-Type', 'Authorization'],
+//   credentials: true,
+// };
 
 // Connect to MongoDB
 connectDB().catch(err => {
