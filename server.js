@@ -17,8 +17,14 @@ const app = express();
 const server = http.createServer(app);
 
 // Configure CORS for both Express and Socket.IO
+// const corsOptions = {
+//   origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
+//   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+//   allowedHeaders: ['Content-Type', 'Authorization'],
+//   credentials: true,
+// };
 const corsOptions = {
-  origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
+  origin: ['http://localhost:5173', 'http://127.0.0.1:5173', 'https://connectify-backend-bj3b.onrender.com'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
