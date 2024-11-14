@@ -17,29 +17,19 @@ const app = express();
 const server = http.createServer(app);
 
 // Configure CORS for both Express and Socket.IO
-// const corsOptions = {
-//   origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
-//   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-//   allowedHeaders: ['Content-Type', 'Authorization'],
-//   credentials: true,
-// };
 const corsOptions = {
-  origin: ['http://localhost:5173', 'http://127.0.0.1:5173', 'https://connectify-backend-bj3b.onrender.com'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
+  origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
+  methods: ['GET', 'POST'],
+  credentials: true
 };
 
 app.use(cors(corsOptions));
-
-// Handle preflight requests for all routes
-app.options('*', cors(corsOptions));
 
 // Initialize Socket.IO with proper configuration
 const io = socketIO(server, {
   cors: corsOptions,
   pingTimeout: 60000,
-  connectTimeout: 60000,
+  connectTimeout: 60000
 });
 
 // Connect to MongoDB
@@ -101,14 +91,17 @@ io.on('connection', (socket) => {
         return;
       }
 
+      // Ensure consistent conversation ID
       const conversationId = getConversationId(messageData.senderId, messageData.receiverId);
       messageData.conversationId = conversationId;
 
       const message = new Message(messageData);
       await message.save();
       
+      // Emit to all sockets in the conversation
       io.to(conversationId).emit('message', message);
 
+      // Also emit directly to sender and receiver sockets
       const receiverSocketId = onlineUsers.get(messageData.receiverId);
       if (receiverSocketId) {
         io.to(receiverSocketId).emit('message', message);
