@@ -17,8 +17,15 @@ const app = express();
 const server = http.createServer(app);
 
 // Configure CORS for both Express and Socket.IO
+// const corsOptions = {
+//   origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
+//   methods: ['GET', 'POST'],
+//   credentials: true
+// };
+
+// app.use(cors(corsOptions));
 const corsOptions = {
-  origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
+  origin: '*', // Allow all domains (typically for development or public APIs)
   methods: ['GET', 'POST'],
   credentials: true
 };
