@@ -58,6 +58,7 @@ app.use(express.json());
 app.use('/auth', authRoutes);
 app.use('/users', userRoutes);
 app.use('/resumes', resumeRoutes);
+app.use('/chat', chatRoutes);
 
 // Store online users with their socket IDs
 const onlineUsers = new Map();
